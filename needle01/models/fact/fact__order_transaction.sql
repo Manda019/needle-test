@@ -1,12 +1,6 @@
 {{ config(
-    tags=["daily"],
-    materialized='table',
-    partition_by={
-      "field": "last_updated_datetime",
-      "data_type": "datetime",
-      "granularity": "day"
-    }
-)}}
+    materialized='table')
+    }}
 
 WITH orders_dataset as(
     SELECT * FROM {{  source('raw','olist_orders_dataset')  }}
@@ -20,7 +14,7 @@ products_dataset as(
 customers_dataset as(
     SELECT * FROM {{  source('raw','olist_customers_dataset')  }}
 ),
-WITH tx AS(
+tx AS(
   SELECT a.order_id,
          order_purchase_timestamp AS purchase_datetime,
          order_approved_at AS approved_datetime,
@@ -35,5 +29,8 @@ WITH tx AS(
     ON b.product_id = c.product_id
   LEFT JOIN customers_dataset d
     ON a.customer_id = d.customer_id
+),
+final AS(
+  SELECT * FROM tx
 )
-SELECT * FROM tx
+SELECT * FROM final

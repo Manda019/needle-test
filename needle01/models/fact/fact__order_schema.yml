@@ -1,0 +1,22 @@
+Version: 2
+
+models:
+  - name: fact__order_transaction
+    description: "A table consist of every order with its customer and product category attributes"
+    columns:
+    - name: order_id
+      description: "id for every order"
+      tests:
+        - not_null
+    - name: purchase_datetime
+      description: "date when create order_id"
+      tests:
+        - not_null
+    - name: status
+      description: "order status"
+      tests:
+        - not_null
+    - name: customer_unique_id
+      description: "unique id for customer"
+      tests:
+        - not_null
